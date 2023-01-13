@@ -1,0 +1,300 @@
+---
+openapi: 3.0.1
+info:
+  title: OpenAPI definition
+  version: v0
+servers:
+- url: http://localhost:8080
+  description: Generated server url
+paths:
+  /create/novelBoard:
+    post:
+      tags:
+      - novel-board-create-controller
+      summary: 소설 보드 생성 api
+      description: 소설 보드 생성 api
+      operationId: create
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/NovelCreateRequest'
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: object
+        "404":
+          description: Not Found
+          content:
+            '*/*':
+              schema:
+                type: string
+  /relay/{id}:
+    patch:
+      tags:
+      - novel-board-edit-controller
+      operationId: relay
+      parameters:
+      - name: id
+        in: path
+        required: true
+        style: simple
+        explode: false
+        schema:
+          $ref: '#/components/schemas/NovelBoardId'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/NovelCreateRequest'
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: object
+        "404":
+          description: Not Found
+          content:
+            '*/*':
+              schema:
+                type: string
+  /fork/{id}:
+    patch:
+      tags:
+      - novel-board-edit-controller
+      operationId: fork
+      parameters:
+      - name: id
+        in: path
+        required: true
+        style: simple
+        explode: false
+        schema:
+          $ref: '#/components/schemas/NovelBoardId'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/NovelCreateRequest'
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: object
+        "404":
+          description: Not Found
+          content:
+            '*/*':
+              schema:
+                type: string
+  /close/{id}:
+    patch:
+      tags:
+      - novel-board-edit-controller
+      operationId: close
+      parameters:
+      - name: id
+        in: path
+        required: true
+        style: simple
+        explode: false
+        schema:
+          $ref: '#/components/schemas/NovelBoardId'
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: object
+        "404":
+          description: Not Found
+          content:
+            '*/*':
+              schema:
+                type: string
+  /novelBoards:
+    get:
+      tags:
+      - novel-board-view-controller
+      operationId: list
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/NovelBoard'
+        "404":
+          description: Not Found
+          content:
+            '*/*':
+              schema:
+                type: string
+  /novelBoard/{id}:
+    get:
+      tags:
+      - novel-board-view-controller
+      operationId: detail
+      parameters:
+      - name: id
+        in: path
+        required: true
+        style: simple
+        explode: false
+        schema:
+          $ref: '#/components/schemas/NovelBoardId'
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/NovelBoard'
+        "404":
+          description: Not Found
+          content:
+            '*/*':
+              schema:
+                type: string
+  /annyeng:
+    get:
+      tags:
+      - health-check-controller
+      operationId: hello
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: string
+        "404":
+          description: Not Found
+          content:
+            '*/*':
+              schema:
+                type: string
+  /remove/{id}:
+    delete:
+      tags:
+      - novel-board-edit-controller
+      operationId: remove
+      parameters:
+      - name: id
+        in: path
+        required: true
+        style: simple
+        explode: false
+        schema:
+          $ref: '#/components/schemas/NovelBoardId'
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: string
+        "404":
+          description: Not Found
+          content:
+            '*/*':
+              schema:
+                type: string
+components:
+  schemas:
+    NovelCreateRequest:
+      required:
+      - content
+      - title
+      - writerId
+      type: object
+      properties:
+        writerId:
+          type: string
+        title:
+          type: string
+        content:
+          type: string
+      description: ""
+    NovelBoardId:
+      type: object
+      properties:
+        id:
+          type: string
+      description: ""
+    Content:
+      type: object
+      properties:
+        value:
+          type: string
+      description: ""
+    NovelBoard:
+      type: object
+      properties:
+        novelBoardId:
+          $ref: '#/components/schemas/NovelBoardId'
+        opening:
+          $ref: '#/components/schemas/Opening'
+        novels:
+          $ref: '#/components/schemas/Novels'
+        createdAt:
+          type: string
+          format: date-time
+        deleteAt:
+          type: string
+          format: date-time
+        version:
+          type: integer
+          format: int64
+        novelSize:
+          type: integer
+          format: int32
+        closed:
+          type: boolean
+      description: ""
+    Novels:
+      type: object
+      description: ""
+    Opening:
+      type: object
+      properties:
+        openingKey:
+          $ref: '#/components/schemas/OpeningKey'
+        writerId:
+          $ref: '#/components/schemas/WriterId'
+        title:
+          $ref: '#/components/schemas/Title'
+        content:
+          $ref: '#/components/schemas/Content'
+      description: ""
+    OpeningKey:
+      type: object
+      properties:
+        key:
+          type: string
+      description: ""
+    Title:
+      type: object
+      properties:
+        name:
+          type: string
+      description: ""
+    WriterId:
+      type: object
+      properties:
+        id:
+          type: string
+      description: ""
