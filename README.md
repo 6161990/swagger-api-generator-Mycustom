@@ -115,6 +115,9 @@ gradle build 에서 openapi > generateOpenApiDocs 태스크를 실행하면 빌�
 ### openAPI yaml 작성하기
 
 ---
+
+<img width="428" alt="2023-01-14_13-31-39" src="https://user-images.githubusercontent.com/74708028/212453185-9a7eb403-dfac-49c0-b517-59b5c83be699.png">.  
+
 * [swagger 에서 제공하는 예제](https://petstore.swagger.io/) 를 확인해보면 대충 가볍게 작성 문법을 익힐 수 있다.   
 * 사진 속 링크를 클릭하면 yaml 파일 다운로드 가능하다.
 * yaml 파일은 생각보다 길어지는데, 가독성이 떨어지므로 `$ref` 를 이용하여 파일 분리([방법](https://davidgarcia.dev/posts/how-to-split-open-api-spec-into-multiple-files/))를 추천한다.
@@ -163,7 +166,8 @@ sourceSets.main.java.srcDir "${swaggerSources.openapi.code.outputDir}/src/main/j
 sourceSets.main.resources.srcDir "${swaggerSources.openapi.code.outputDir}/src/main/resources"
 ```
 
-* 위와 같이 설정하면 gradle > Tasks > build 에 `generateSwaggerCodeAnyName` 생성되고, 이를 실행시키면 /build 에 소스코드 파일이 생성된다.   
+* 위와 같이 설정하면 gradle > Tasks > build 에 `generateSwaggerCodeAnyName` 생성되고, 이를 실행시키면 /build 에 소스코드 파일이 생성된다.  <img width="1017" alt="2023-01-14_13-40-36" src="https://user-images.githubusercontent.com/74708028/212453017-bfe8e9ad-6a11-4a56-9b13-745bbb732500.png">
+
 
 
 ## 📍Mock Server
