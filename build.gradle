@@ -1,7 +1,9 @@
 plugins {
 	id 'java'
 	id 'org.hidetake.swagger.generator' version '2.19.2'
+
 }
+
 
 repositories {
 	mavenCentral()
@@ -20,7 +22,6 @@ swaggerSources {
 			language = 'spring'
 			configFile = file("$rootDir/config.json")
 			components = ['models', 'apis']
-
 			jvmArgs = ['--add-opens=java.base/java.util=ALL-UNNAMED']
 		}
 	}
