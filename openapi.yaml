@@ -1,18 +1,81 @@
----
-openapi: 3.0.1
-info:
-  title: OpenAPI definition
-  version: v0
+openapi: 3.0.0
 servers:
-- url: http://localhost:8080
-  description: Generated server url
+  # Added by API Auto Mocking Plugin
+  - description: SwaggerHub API Auto Mocking
+    url: https://virtserver.swaggerhub.com/6161990/BoardingExpress/1.0.0
+info:
+  description: BoardingExpressCompany
+  version: "0.1.0"
+  title: Relay Novelopment API
+  contact:
+    email: 6161990src@gmail.com
+  license:
+    name: Apache 2.0
+    url: 'http://www.apache.org/licenses/LICENSE-2.0.html'
+tags:
+  - name: novel-board-create-controller
+    description: Secured Admin-only calls for creating
+  - name: novel-board-edit-controller
+    description: Operations available to users and admin for editing
+  - name: novel-board-view-controller
+    description: Operations available to users and admin for view
+  - name : articleComments-controller
+    description: Operations available to users for editing articleComments
 paths:
-  /create/novelBoard:
+  /api/novelBoardList:
+    get:
+      tags:
+        - novel-board-view-controller
+      summary:  소설 보드 리스트 조회
+      description: 전체 소설 보드 리스트 조회
+      operationId: list
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/NovelBoard'
+        '404':
+          description: Not Found
+          content:
+            '*/*':
+              schema:
+                type: string
+  /api/novelBoardList/{id}:
+    get:
+      tags:
+        - novel-board-view-controller
+      summary:  소설 보드 단건 조회
+      description: 소설 보드 단건 조회
+      operationId: detail
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            $ref: '#/components/schemas/NovelBoardId'
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/NovelBoard'
+        '404':
+          description: Not Found
+          content:
+            '*/*':
+              schema:
+                type: string
+  /api/novelBoardList/create:
     post:
       tags:
-      - novel-board-create-controller
-      summary: 소설 보드 생성 api
-      description: 소설 보드 생성 api
+        - novel-board-create-controller
+      summary:  소설 보드 생성 with Opening
+      description: 어드민용 소설 보드 생성
       operationId: create
       requestBody:
         content:
@@ -21,193 +84,421 @@ paths:
               $ref: '#/components/schemas/NovelCreateRequest'
         required: true
       responses:
-        "200":
+        '200':
           description: OK
           content:
             '*/*':
               schema:
                 type: object
-        "404":
+        '404':
           description: Not Found
           content:
             '*/*':
               schema:
                 type: string
-  /relay/{id}:
-    patch:
+  /api/novelBoardList/edit/{id}:
+    put:
       tags:
-      - novel-board-edit-controller
-      operationId: relay
+        - novel-board-edit-controller
+      summary:  소설 보드 수정 (Opening 수정)
+      description: 어드민용 소설 보드 오프닝 수정
+      operationId: edit
       parameters:
-      - name: id
-        in: path
-        required: true
-        style: simple
-        explode: false
-        schema:
-          $ref: '#/components/schemas/NovelBoardId'
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/NovelCreateRequest'
-        required: true
+        - name: id
+          in: path
+          required: true
+          schema:
+            $ref: '#/components/schemas/NovelBoardId'
       responses:
-        "200":
+        '200':
           description: OK
           content:
             '*/*':
               schema:
-                type: object
-        "404":
+                type: string
+        '404':
           description: Not Found
           content:
             '*/*':
               schema:
                 type: string
-  /fork/{id}:
-    patch:
+  /api/novelBoardList/delete/{id}:
+    delete:
       tags:
-      - novel-board-edit-controller
-      operationId: fork
+        - novel-board-edit-controller
+      summary:  소설 보드 삭제
+      description: 어드민용 소설 보드 삭제
+      operationId: remove
       parameters:
-      - name: id
-        in: path
-        required: true
-        style: simple
-        explode: false
-        schema:
-          $ref: '#/components/schemas/NovelBoardId'
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/NovelCreateRequest'
-        required: true
+        - name: id
+          in: path
+          required: true
+          schema:
+            $ref: '#/components/schemas/NovelBoardId'
       responses:
-        "200":
-          description: OK
+        '204':
+          description: No Content
           content:
             '*/*':
               schema:
-                type: object
-        "404":
+                type: string
+        '404':
           description: Not Found
           content:
             '*/*':
               schema:
                 type: string
-  /close/{id}:
+  /api/novelBoardList/close/{id}:
     patch:
       tags:
-      - novel-board-edit-controller
+        - novel-board-edit-controller
       operationId: close
       parameters:
-      - name: id
-        in: path
-        required: true
-        style: simple
-        explode: false
-        schema:
-          $ref: '#/components/schemas/NovelBoardId'
+        - name: id
+          in: path
+          required: true
+          schema:
+            $ref: '#/components/schemas/NovelBoardId'
       responses:
-        "200":
+        '200':
           description: OK
           content:
             '*/*':
               schema:
                 type: object
-        "404":
+        '404':
           description: Not Found
           content:
             '*/*':
               schema:
                 type: string
-  /novelBoards:
+  /api/novelBoardList/{novelBoardId}/articles/{id}:
     get:
       tags:
-      - novel-board-view-controller
-      operationId: list
+        - novel-board-view-controller
+      summary:  아티클 단건 조회
+      description: 아티클 단건 조회
+      operationId: detailArticle
+      parameters:
+        - name: novelBoardId
+          in: path
+          required: true
+          schema:
+            $ref: '#/components/schemas/NovelBoardId'
+        - name: id
+          in: path
+          required: true
+          schema:
+            $ref: '#/components/schemas/RelayNovelKey'
       responses:
-        "200":
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/Novel'
+        '404':
+          description: Not Found
+          content:
+            '*/*':
+              schema:
+                type: string
+  /api/relay/{novelBoardId}:
+    patch:
+      tags:
+        - novel-board-edit-controller
+      operationId: relay
+      parameters:
+        - name: novelBoardId
+          in: path
+          required: true
+          schema:
+            $ref: '#/components/schemas/NovelBoardId'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/NovelCreateRequest'
+        required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: object
+        '404':
+          description: Not Found
+          content:
+            '*/*':
+              schema:
+                type: string
+  /api/fork/{novelBoardId}:
+    patch:
+      tags:
+        - novel-board-edit-controller
+      operationId: fork
+      parameters:
+        - name: novelBoardId
+          in: path
+          required: true
+          schema:
+            $ref: '#/components/schemas/NovelBoardId'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/NovelCreateRequest'
+        required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: object
+        '404':
+          description: Not Found
+          content:
+            '*/*':
+              schema:
+                type: string
+  /api/articles/edit/{id}:
+    put:
+      tags:
+        - novel-board-edit-controller
+      summary:  아티클 수정
+      description: 어드민용 아티클 수정
+      operationId: editArticle
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            $ref: '#/components/schemas/RelayNovelKey'
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/Novel'
+        '404':
+          description: Not Found
+          content:
+            '*/*':
+              schema:
+                type: string
+  /api/articles/delete/{id}:
+    delete:
+      tags:
+        - novel-board-edit-controller
+      summary:  아티클 삭제
+      description: 어드민용 아티클 삭제
+      operationId: removeArticle
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            $ref: '#/components/schemas/RelayNovelKey'
+      responses:
+        '204':
+          description: No Content
+          content:
+            '*/*':
+              schema:
+                type: string
+        '404':
+          description: Not Found
+          content:
+            '*/*':
+              schema:
+                type: string
+  /api/articleComments:
+    get:
+      tags:
+        - articleComments-controller
+      summary: 댓글 조회
+      description: 전체 아티클 댓글 조회
+      operationId: articleCommentList
+      responses:
+        '200':
           description: OK
           content:
             '*/*':
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/NovelBoard'
-        "404":
+                  $ref: '#/components/schemas/ArticleComment'
+        '404':
           description: Not Found
           content:
             '*/*':
               schema:
                 type: string
-  /novelBoard/{id}:
+  /api/articleComments/{id}:
     get:
       tags:
-      - novel-board-view-controller
-      operationId: detail
+        - articleComments-controller
+      summary:  댓글 단건 조회
+      description: 댓글 단건 조회
+      operationId: articleCommentDetail
       parameters:
-      - name: id
-        in: path
-        required: true
-        style: simple
-        explode: false
-        schema:
-          $ref: '#/components/schemas/NovelBoardId'
+        - name: id
+          in: path
+          required: true
+          schema:
+            $ref: '#/components/schemas/ArticleCommentId'
       responses:
-        "200":
+        '200':
           description: OK
           content:
             '*/*':
               schema:
-                $ref: '#/components/schemas/NovelBoard'
-        "404":
+                $ref: '#/components/schemas/ArticleComment'
+        '404':
           description: Not Found
           content:
             '*/*':
               schema:
                 type: string
+  /api/articles/{articleId}/articleComments:
+    get:
+      tags:
+        - articleComments-controller
+      summary:  아티클 관련 댓글 리스트 조회
+      description: 아티클 관련 댓글 리스트 조회
+      operationId: viewArticleComments
+      parameters:
+        - name: articleId
+          in: path
+          required: true
+          schema:
+            $ref: '#/components/schemas/ArticleId'
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ArticleComment'
+        '404':
+          description: Not Found
+          content:
+            '*/*':
+              schema:
+                type: string
+  /api/articles/{articleId}/articleComments/add:
+    post:
+      tags:
+        - articleComments-controller
+      summary: 아티클 댓글 추가
+      description: 아티클 댓글 추가
+      operationId: add
+      parameters:
+        - name: articleId
+          in: path
+          required: true
+          schema:
+            $ref: '#/components/schemas/ArticleId'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ArticleCommentAddRequest'
+        required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: object
+        '404':
+          description: Not Found
+          content:
+            '*/*':
+              schema:
+                type: string
+  /api/articles/{articleId}/articleComments/edit/{id}:
+    put:
+      tags:
+        - articleComments-controller
+      summary:  아티클 댓글 수정
+      description: 아티클 댓글 수정
+      operationId: editArticleComment
+      parameters:
+        - name: articleId
+          in: path
+          required: true
+          schema:
+            $ref: '#/components/schemas/ArticleId'
+        - name: id
+          in: path
+          required: true
+          schema:
+            $ref: '#/components/schemas/ArticleCommentId'
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/Novel'
+        '404':
+          description: Not Found
+          content:
+            '*/*':
+              schema:
+                type: string
+  /api/articles/{articleId}/articleComments/delete/{id}:
+    put:
+      tags:
+        - articleComments-controller
+      summary:  아티클 댓글 삭제
+      description: 아티클 댓글 삭제
+      operationId: deleteArticleComment
+      parameters:
+        - name: articleId
+          in: path
+          required: true
+          schema:
+            $ref: '#/components/schemas/ArticleId'
+        - name: id
+          in: path
+          required: true
+          schema:
+            $ref: '#/components/schemas/ArticleCommentId'
+      responses:
+        '204':
+          description: No Content
+          content:
+            '*/*':
+              schema:
+                type: string
+        '404':
+          description: Not Found
+          content:
+            '*/*':
+              schema:
+                type: string
+
   /annyeng:
     get:
       tags:
-      - health-check-controller
+        - health-check-controller
       operationId: hello
       responses:
-        "200":
+        '200':
           description: OK
           content:
             '*/*':
               schema:
                 type: string
-        "404":
-          description: Not Found
-          content:
-            '*/*':
-              schema:
-                type: string
-  /remove/{id}:
-    delete:
-      tags:
-      - novel-board-edit-controller
-      operationId: remove
-      parameters:
-      - name: id
-        in: path
-        required: true
-        style: simple
-        explode: false
-        schema:
-          $ref: '#/components/schemas/NovelBoardId'
-      responses:
-        "200":
-          description: OK
-          content:
-            '*/*':
-              schema:
-                type: string
-        "404":
+        '404':
           description: Not Found
           content:
             '*/*':
@@ -217,9 +508,9 @@ components:
   schemas:
     NovelCreateRequest:
       required:
-      - content
-      - title
-      - writerId
+        - content
+        - title
+        - writerId
       type: object
       properties:
         writerId:
@@ -228,19 +519,30 @@ components:
           type: string
         content:
           type: string
-      description: ""
+      description: ''
+    ArticleCommentAddRequest:
+      required:
+        - content
+        - writerId
+      type: object
+      properties:
+        writerId:
+          type: string
+        content:
+          type: string
+      description: ''
     NovelBoardId:
       type: object
       properties:
         id:
           type: string
-      description: ""
+      description: ''
     Content:
       type: object
       properties:
         value:
           type: string
-      description: ""
+      description: ''
     NovelBoard:
       type: object
       properties:
@@ -264,10 +566,30 @@ components:
           format: int32
         closed:
           type: boolean
-      description: ""
+      description: ''
     Novels:
+      type: array
+      items:
+        $ref: '#/components/schemas/Novel'
+      description: ''
+    Novel:
       type: object
-      description: ""
+      properties:
+        RelayNovelKey:
+          $ref: '#/components/schemas/RelayNovelKey'
+        NovelKey:
+          $ref: '#/components/schemas/NovelKey'
+        writerId:
+          $ref: '#/components/schemas/WriterId'
+        title:
+          $ref: '#/components/schemas/Title'
+        content:
+          $ref: '#/components/schemas/Content'
+        articleComment:
+          type: array
+          items:
+            $ref: '#/components/schemas/ArticleComment'
+      description: ''
     Opening:
       type: object
       properties:
@@ -279,22 +601,56 @@ components:
           $ref: '#/components/schemas/Title'
         content:
           $ref: '#/components/schemas/Content'
-      description: ""
+      description: ''
+    ArticleComment:
+      type: object
+      properties:
+        articleCommentId:
+          $ref: '#/components/schemas/ArticleCommentId'
+        writerId:
+          $ref: '#/components/schemas/WriterId'
+        content:
+          $ref: '#/components/schemas/Content'
+      description: ''
+    NovelKey:
+      type: object
+      properties:
+        key:
+          type: string
+      description: ''
+    RelayNovelKey:
+      type: object
+      properties:
+        key:
+          type: string
+      description: ''
     OpeningKey:
       type: object
       properties:
         key:
           type: string
-      description: ""
+      description: ''
     Title:
       type: object
       properties:
         name:
           type: string
-      description: ""
+      description: ''
+    ArticleId:
+      type: object
+      properties:
+        name:
+          type: string
+      description: ''
     WriterId:
       type: object
       properties:
         id:
           type: string
-      description: ""
+      description: ''
+    ArticleCommentId:
+      type: object
+      properties:
+        id:
+          type: string
+      description: ''
