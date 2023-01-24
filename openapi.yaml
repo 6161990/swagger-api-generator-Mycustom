@@ -19,8 +19,8 @@ tags:
     description: Operations available to users and admin for editing
   - name: novel-board-view-controller
     description: Operations available to users and admin for view
-  - name : articleCommnets-controller
-    description: Operations available to users for editing articlesCommnets
+  - name : articleComments-controller
+    description: Operations available to users for editing articlesComments
 paths:
   /novelBoardView/api/novelBoardList:
     get:
@@ -315,10 +315,10 @@ paths:
             '*/*':
               schema:
                 type: string
-  /articleCommentView/api/articleCommnets:
+  /articleCommentView/api/articleComments:
     get:
       tags:
-        - articleCommnets-controller
+        - articleComments-controller
       summary: 전체 댓글 조회
       description: 전체 아티클 댓글 조회
       operationId: articleCommentList
@@ -337,10 +337,10 @@ paths:
             '*/*':
               schema:
                 type: string
-  /articleCommentView/api/articleCommnets/{id}:
+  /articleCommentView/api/articleComments/{id}:
     get:
       tags:
-        - articleCommnets-controller
+        - articleComments-controller
       summary:  댓글 단건 조회
       description: 댓글 단건 조회
       operationId: articleCommentDetail
@@ -366,7 +366,7 @@ paths:
   /articleCommentView/api/{articleId}/articleComments:
     get:
       tags:
-        - articleCommnets-controller
+        - articleComments-controller
       summary:  아티클 관련 댓글 리스트 조회
       description: 아티클 관련 댓글 리스트 조회
       operationId: viewArticleComments
@@ -394,7 +394,7 @@ paths:
   /articleCommentEditor/api/{articleId}/articleComments/add:
     post:
       tags:
-        - articleCommnets-controller
+        - articleComments-controller
       summary: 댓글 추가
       description: 댓글 추가
       operationId: add
@@ -426,7 +426,7 @@ paths:
   /articleCommentEditor/api/{articleId}/delete/{id}:
     delete:
       tags:
-        - articleCommnets-controller
+        - articleComments-controller
       summary:  댓글 삭제
       description: 댓글 삭제
       operationId: removeArticleComment
@@ -457,7 +457,7 @@ paths:
   /articleCommentEditor/api/{articleId}/update/{id}:
     put:
       tags:
-        - articleCommnets-controller
+        - articleComments-controller
       summary:  댓글 수정
       description: 댓글 수정
       operationId: editArticleComment
