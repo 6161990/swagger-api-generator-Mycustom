@@ -96,7 +96,7 @@ paths:
             '*/*':
               schema:
                 type: string
-  /novelBoardEdit/api/openingEdit/{id}:
+  /novelBoardEdit/api/openingArticle/{id}:
     put:
       tags:
         - novel-board-edit-controller
@@ -172,7 +172,7 @@ paths:
             '*/*':
               schema:
                 type: string
-  /novelBoardView/api/{novelBoardId}/articles/{id}:
+  /novelBoardView/api/{novelBoardId}/articles/{relayArticleKey}:
     get:
       tags:
         - novel-board-view-controller
@@ -185,31 +185,31 @@ paths:
           required: true
           schema:
             $ref: '#/components/schemas/NovelBoardId'
-        - name: id
+        - name: relayArticleKey
           in: path
           required: true
           schema:
-            $ref: '#/components/schemas/RelayNovelKey'
+            $ref: '#/components/schemas/RelayArticleKey'
       responses:
         '200':
           description: OK
           content:
             '*/*':
               schema:
-                $ref: '#/components/schemas/Novel'
+                $ref: '#/components/schemas/Article'
         '404':
           description: Not Found
           content:
             '*/*':
               schema:
                 type: string
-  /novelBoardEdit/api/relay/{novelBoardId}:
+  /novelBoardEdit/api/relay/{id}:
     patch:
       tags:
         - novel-board-edit-controller
       operationId: relay
       parameters:
-        - name: novelBoardId
+        - name: id
           in: path
           required: true
           schema:
@@ -233,13 +233,13 @@ paths:
             '*/*':
               schema:
                 type: string
-  /novelBoardEdit/api/fork/{novelBoardId}:
+  /novelBoardEdit/api/fork/{id}:
     patch:
       tags:
         - novel-board-edit-controller
       operationId: fork
       parameters:
-        - name: novelBoardId
+        - name: id
           in: path
           required: true
           schema:
@@ -263,7 +263,7 @@ paths:
             '*/*':
               schema:
                 type: string
-  /novelBoardEdit/api/articles/edit/{id}:
+  /novelBoardEdit/api/relayedArticle/{id}:
     put:
       tags:
         - novel-board-edit-controller
@@ -275,7 +275,7 @@ paths:
           in: path
           required: true
           schema:
-            $ref: '#/components/schemas/RelayNovelKey'
+            $ref: '#/components/schemas/RelayArticleKey'
       responses:
         '200':
           description: OK
@@ -301,7 +301,7 @@ paths:
           in: path
           required: true
           schema:
-            $ref: '#/components/schemas/RelayNovelKey'
+            $ref: '#/components/schemas/RelayArticleKey'
       responses:
         '204':
           description: No Content
@@ -363,7 +363,7 @@ paths:
             '*/*':
               schema:
                 type: string
-  /articleCommentView/api/{articleId}/articleComments:
+  /articleCommentView/api/{articleKey}/articleComments:
     get:
       tags:
         - articleComments-controller
@@ -371,11 +371,11 @@ paths:
       description: 아티클 관련 댓글 리스트 조회
       operationId: viewArticleComments
       parameters:
-        - name: articleId
+        - name: articleKey
           in: path
           required: true
           schema:
-            $ref: '#/components/schemas/ArticleId'
+            $ref: '#/components/schemas/ArticleKey'
       responses:
         '200':
           description: OK
@@ -391,7 +391,7 @@ paths:
             '*/*':
               schema:
                 type: string
-  /articleCommentEditor/api/{articleId}/articleComments/add:
+  /articleCommentEdit/api/{articleKey}/articleComments/add:
     post:
       tags:
         - articleComments-controller
@@ -399,11 +399,11 @@ paths:
       description: 댓글 추가
       operationId: add
       parameters:
-        - name: articleId
+        - name: articleKey
           in: path
           required: true
           schema:
-            $ref: '#/components/schemas/ArticleId'
+            $ref: '#/components/schemas/ArticleKey'
       requestBody:
         content:
           application/json:
@@ -423,7 +423,7 @@ paths:
             '*/*':
               schema:
                 type: string
-  /articleCommentEditor/api/{articleId}/delete/{id}:
+  /articleCommentEdit/api/{articleKey}/delete/{id}:
     delete:
       tags:
         - articleComments-controller
@@ -431,11 +431,11 @@ paths:
       description: 댓글 삭제
       operationId: removeArticleComment
       parameters:
-        - name: articleId
+        - name: articleKey
           in: path
           required: true
           schema:
-            $ref: '#/components/schemas/ArticleId'
+            $ref: '#/components/schemas/ArticleKey'
         - name: id
           in: path
           required: true
@@ -454,7 +454,7 @@ paths:
             '*/*':
               schema:
                 type: string
-  /articleCommentEditor/api/{articleId}/update/{id}:
+  /articleCommentEdit/api/{articleKey}/update/{id}:
     put:
       tags:
         - articleComments-controller
@@ -462,11 +462,11 @@ paths:
       description: 댓글 수정
       operationId: editArticleComment
       parameters:
-        - name: articleId
+        - name: articleKey
           in: path
           required: true
           schema:
-            $ref: '#/components/schemas/ArticleId'
+            $ref: '#/components/schemas/ArticleKey'
         - name: id
           in: path
           required: true
@@ -550,7 +550,7 @@ components:
         opening:
           $ref: '#/components/schemas/Opening'
         novels:
-          $ref: '#/components/schemas/Novels'
+          $ref: '#/components/schemas/Articles'
         createdAt:
           type: string
           format: date-time
@@ -566,18 +566,18 @@ components:
         closed:
           type: boolean
       description: ''
-    Novels:
+    Articles:
       type: array
       items:
-        $ref: '#/components/schemas/Novel'
+        $ref: '#/components/schemas/Article'
       description: ''
-    Novel:
+    Article:
       type: object
       properties:
-        RelayNovelKey:
-          $ref: '#/components/schemas/RelayNovelKey'
-        NovelKey:
-          $ref: '#/components/schemas/NovelKey'
+        RelayArticleKey:
+          $ref: '#/components/schemas/RelayArticleKey'
+        ArticleKey:
+          $ref: '#/components/schemas/ArticleKey'
         writerId:
           $ref: '#/components/schemas/WriterId'
         title:
@@ -593,7 +593,7 @@ components:
       type: object
       properties:
         openingKey:
-          $ref: '#/components/schemas/OpeningKey'
+          $ref: '#/components/schemas/OpeningArticleKey'
         writerId:
           $ref: '#/components/schemas/WriterId'
         title:
@@ -611,31 +611,25 @@ components:
         content:
           $ref: '#/components/schemas/Content'
       description: ''
-    NovelKey:
+    ArticleKey:
       type: object
       properties:
         key:
           type: string
       description: ''
-    RelayNovelKey:
+    RelayArticleKey:
       type: object
       properties:
         key:
           type: string
       description: ''
-    OpeningKey:
+    OpeningArticleKey:
       type: object
       properties:
         key:
           type: string
       description: ''
     Title:
-      type: object
-      properties:
-        name:
-          type: string
-      description: ''
-    ArticleId:
       type: object
       properties:
         name:
