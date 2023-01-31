@@ -1,7 +1,21 @@
 {
-  "library": "spring-mvc",
-  "modelPackage": "example.model",
-  "apiPackage": "example.api",
-  "invokerPackage": "example",
-  "delegatePattern": true
+  "library": "spring-boot",
+  "interfaceOnly" : true,
+  "modelPackage": "com.yoon.codeGenCustom.model",
+  "apiPackage": "com.yoon.codeGenCustom.api",
+  "invokerPackage": "com.yoon.codeGenCustom",
+  /*"delegatePattern": true,*/
+  "useTags" : true,
+  "skipDefaultInterface" : true,
+  "dateLibrary": "java8",
+  "useBeanValidation" : true,
+  "serializableModel" : true,
+  "implicitHeaders" : false,
+  "swaggerDocketConfig": false,
+  "hideGenerationTimestamp": true,
+
+  "useSpringfox": false,
+  "reactive": false,
+  "openApiNullable" : false
+
 }
