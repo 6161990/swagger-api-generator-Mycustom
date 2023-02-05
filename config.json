@@ -4,7 +4,6 @@
   "modelPackage": "com.yoon.codeGenCustom.model",
   "apiPackage": "com.yoon.codeGenCustom.api",
   "invokerPackage": "com.yoon.codeGenCustom",
-  /*"delegatePattern": true,*/
   "useTags" : true,
   "skipDefaultInterface" : true,
   "dateLibrary": "java8",
