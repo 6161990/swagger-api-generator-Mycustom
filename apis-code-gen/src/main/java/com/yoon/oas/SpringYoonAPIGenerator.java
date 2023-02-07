@@ -4,17 +4,17 @@ import io.swagger.v3.oas.models.media.Schema;
 import org.openapitools.codegen.CodegenModel;
 import org.openapitools.codegen.languages.SpringCodegen;
 
-public class SpringKidsworldAPIGenerator extends SpringCodegen {
+public class SpringYoonAPIGenerator extends SpringCodegen {
 
 
-    public SpringKidsworldAPIGenerator() {
+    public SpringYoonAPIGenerator() {
         super();
-        templateDir = "spring-kidsworld-api";
+        templateDir = "spring-yoon-api";
     }
 
     @Override
     public String getName() {
-        return "spring-kidsworld-api";
+        return "spring-yoon-api";
     }
 
     @Override
