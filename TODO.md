@@ -1,7 +1,7 @@
 ## TODO
 * Spring RestController 의 가독성에 대한 것
 * Spring MVC Test generator 알아보기
-* api spec 과 config, openapi.yaml 위치 조정하기
+* mustache 파일과 연동 
 
 
 ## Trouble Shooting
